@@ -7,9 +7,11 @@ namespace API.Errors
 {
     public class ApiResponse
     {
+        // initates the message to null
         public ApiResponse(int statusCode, string message = null)
         {
             StatusCode = statusCode;
+            // ?? = if not first option, then execute second option
             Message = message ?? GetDefaultMessageForStatusCode(statusCode);
         }
 

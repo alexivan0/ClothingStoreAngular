@@ -13,7 +13,7 @@ namespace Core.Specifications
         public ProductWithFiltersForCountSpecifications(ProductSpecParams productParams)
             : base(x => 
                 (string.IsNullOrEmpty(productParams.Search) || x.Name.ToLower().Contains
-                (productParams.Search)) && // || = or else; implements the search functionality
+                (productParams.Search)) && 
                 (!productParams.BrandId.HasValue || x.ProductBrandId == productParams.BrandId) && 
                 (!productParams.TypeId.HasValue || x.ProductTypeId == productParams.TypeId)  // (or else expression)(!typeId.HasValue or else x.ProductTypeId == typeId) if typeId = true then first expression is false, then the expression after || executes)
             )

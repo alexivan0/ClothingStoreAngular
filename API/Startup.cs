@@ -9,13 +9,13 @@ namespace API
     public class Startup
     {
         private readonly IConfiguration _config;
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config)  // creates the app config with the settings from appsettings.json and other default system settings
         {
             _config = config;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services) // takes the base system services from IServiceCollection and add our services to that list.
         {
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();

@@ -11,7 +11,9 @@ namespace Core.Specifications
 
         //Interfaces that need to be implemented inside "BaseSpecification class"
         
-        Expression<Func<T, bool>> Criteria {get; } // the Criteria that's evaluated(inside "Data/SpecificationEvaluator") to get the products
+        // the Expression that's evaluated as a bool(inside "Data/SpecificationEvaluator") to get the products(Ex: {x => (x.Id == value(Core.Specifications.ProductsWithTypesAndBrandsSpecification+<>c__DisplayClass1_0).id)})
+        //Left[Expression]{x.Id} == Right[Expression]{value(Core.Specifications.ProductsWithTypesAndBrandsSpecification+<>c__DisplayClass1_0).id)} ?
+        Expression<Func<T, bool>> Criteria {get; } 
 
         List<Expression<Func<T, object>>> Includes {get; } //add extra conditions to the LINQ expression(Criteria)
 
@@ -23,6 +25,6 @@ namespace Core.Specifications
 
         int Skip {get;} // skip a number of products
         
-        bool ISpagingEnabled {get;} // enable the options above or not
+        bool ISpagingEnabled {get;} // enable the 2 options above, or not
     }
 }

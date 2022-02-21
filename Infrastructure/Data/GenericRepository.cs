@@ -43,7 +43,8 @@ namespace Infrastructure.Data
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
-        {
+        {   // Takes as arguments the context and the unapplied specifications
+            // Returns the object(s) with the specified conditions applied(from the SpecificationEvaluator function)
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
         }
 

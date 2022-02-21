@@ -10,13 +10,17 @@ namespace Infrastructure.Data
 {
     public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
     {
+        //spec = the custom specifications(criteria, includes, orderby etc...)
         public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> spec)
         {
+            // inputQuery = an IQueryable(List) of entities from the database (Ex: List of Product)(Ex: 17 products from the db)
             var query = inputQuery;
 
             if (spec.Criteria != null)
             {
-                query = query.Where(spec.Criteria); // p => p.ProductTypeId == id example
+                // from the List of entities, select only the product that meets the Criteria(p => p.ProductTypeId == id(Ex: 2))
+                // query now becomes an IEnumerable of the desired criteria(Ex: Product where the id is 2])
+                query = query.Where(spec.Criteria);
             }
 
             if (spec.OrderBy != null)

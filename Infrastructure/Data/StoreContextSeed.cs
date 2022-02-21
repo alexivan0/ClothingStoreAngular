@@ -10,21 +10,28 @@ namespace Infrastructure.Data
 {
     public class StoreContextSeed
     {
+        //context = all the models(classes)(EX: Products, ProductBrands, ProductTypes) that EF uses as DB tables
+        //loggerFactory = stores the errors that might appear while executing the method below
         public static async Task SeedAsync(StoreContext context, ILoggerFactory loggerFactory)
         {
             try
             {
                 if (!context.ProductBrands.Any())
                 {
+                    // reads the data from a json file
                     var brandsData = File.ReadAllText("../Infrastructure/Data/SeedData/brands.json");
 
+                    //converts it into a list of objects
                     var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 
+                    // for each object in the list
                     foreach (var item in brands)
                     {
+                        //adds the object to the ProductBrands model(table) in the database
                         context.ProductBrands.Add(item);
                     }
-
+                    
+                    //calls EF to save the changes to the DB
                     await context.SaveChangesAsync();
                 }
 
@@ -58,8 +65,8 @@ namespace Infrastructure.Data
             }
             catch (Exception ex)
             {
-                var logger = loggerFactory.CreateLogger<StoreContextSeed>();
-                logger.LogError(ex.Message);
+                var logger = loggerFactory.CreateLogger<StoreContextSeed>(); //store the error
+                logger.LogError(ex.Message); // display the error in the console
             }
         }
     }

@@ -24,15 +24,15 @@ namespace Infrastructure.Data
         // Change the base settings when EF creates the db classes (check Infrastructure/Config/ProductConfiguration)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); // when the database model is created
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             if(Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
             {   
-                // get all the properties that are decimals
+                // for each class(entity) in the database
                 foreach (var entityType in modelBuilder.Model.GetEntityTypes())
                 {
-                    
+                    // get all the properties that are decimals
                     var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType
                     == typeof(decimal)); 
 
