@@ -1,0 +1,19 @@
+<header>
+    <!--only show the span if the if codintion is true-->
+    <span *ngIf="totalCount && totalCount > 0">
+        Showing 
+        <strong>
+          <!-- > = if top row greater than totalCount
+          ? = then display totalCount
+          : = otherwise display pagenumber*pagesize -->
+          {{(pageNumber - 1) * pageSize + 1}} -  <!-- this is a visual dash, not minus operator-->
+          {{pageNumber * pageSize
+            > this.totalCount  
+            ? this.totalCount  
+            :pageNumber * pageSize 
+          }}
+        </strong> of <strong>{{this.totalCount}}</strong> Results</span>
+        <span *ngIf="totalCount === 0">
+          There are <strong>0</strong> results for this filter.
+        </span>
+  </header>
