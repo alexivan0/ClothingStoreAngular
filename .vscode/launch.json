@@ -2,6 +2,30 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Angular",
+            "type": "chrome",
+            "request": "launch",
+            "preLaunchTask": "npm: start",
+            "url": "https://localhost:4200/#",
+      
+            // Note: The ./client directory
+            "webRoot": "${workspaceFolder}/client",
+            
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+              "webpack:/*": "${webRoot}/*",
+              "/./*": "${webRoot}/*",
+              "/src/*": "${webRoot}/*",
+              "/*": "*",
+              "/./~/*": "${webRoot}/node_modules/*"
+            },
+            "skipFiles": 
+            [
+                "${workspaceFolder}/client/<node_internals>/**",
+                "${workspaceFolder}/client/node_modules/**"
+            ]
+        },
+        {
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes
             // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
@@ -14,7 +38,6 @@
             "args": [],
             "cwd": "${workspaceFolder}/API",
             "stopAtEntry": false,
-            //"enableStepFiltering": false, // doesn't skip over steps when debugging
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
                 "action": "openExternally",
@@ -25,12 +48,26 @@
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
-            }
+            },
+            "skipFiles": 
+            [
+                "${workspaceFolder}/client/<node_internals>/**",
+                "${workspaceFolder}/client/node_modules/**"
+            ]
         },
         {
             "name": ".NET Core Attach",
             "type": "coreclr",
-            "request": "attach"
-        }
-    ]
+            "request": "attach",
+        },
+        
+    ],
+    "compounds": [
+        {
+          "name": "Angular/.NET Core Launch (web)",
+          "configurations": ["Angular", ".NET Core Launch (web)"],
+          //"preLaunchTask": "${defaultBuildTask}",
+          "stopAll": true,
+        },
+      ],
 }
