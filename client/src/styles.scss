@@ -1,7 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
+@import "../node_modules/bootswatch/dist/united/bootstrap.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "../node_modules/ngx-toastr/toastr.css";
 
-/* Importing Bootstrap SCSS file. */
-@import "~bootstrap/scss/bootstrap";
+.xng-breadcrumb-root {
+    padding: 8px 16px;
+    display: inline;
+    border-radius: 0;
+}
 
-/* Importing Datepicker SCSS file. */
-@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+label.xng-breadcrumb-trail {
+    margin-bottom: 0;
+    color: orange;
+}
+
+.xng-breadcrumb-separator {
+    padding: 0 0;
+}
+
+.StripeElement {
+    height: 3.125em;
+}
