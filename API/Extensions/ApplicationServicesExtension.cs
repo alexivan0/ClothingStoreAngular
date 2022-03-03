@@ -15,6 +15,8 @@ namespace API.Extensions
         {
             // add the product repository to the services
             services.AddScoped<IProductRepository, ProductRepository>();
+            // add the basket repository to the services
+            services.AddScoped<IBasketRepository, BasketRepository>();
             // add the generic repository to the services
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>))); 
 
