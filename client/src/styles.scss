@@ -22,3 +22,10 @@ label.xng-breadcrumb-trail {
 .StripeElement {
     height: 3.125em;
 }
+
+a:not([class*="btn"]) {
+    text-decoration: none;
+}
+a:not([class*="btn"]):hover {
+    text-decoration: underline;
+}
