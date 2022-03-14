@@ -15,5 +15,11 @@ namespace Core.Interfaces
         Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec);
         Task<int> CountAsync(ISpecification<T> spec);
 
+        //These are not asyncw because they are only asking EF to track these changes.This is happening in memory not in the db
+        //The repository is not responsible to save the changes to the db, that is left to the UOW.
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(T Entity);
+
     }
 }

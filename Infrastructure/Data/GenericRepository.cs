@@ -48,6 +48,23 @@ namespace Infrastructure.Data
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
         }
 
-        
+        public void Add(T entity)
+        {
+            // begins to track the entity and adds it to the list of changes,
+            // in order to save it when the SaveChanges is called
+            _context.Set<T>().Add(entity);
+        }
+
+        public void Update(T entity)
+        {
+            _context.Set<T>().Attach(entity);
+            //marks the entity as modified and adds is to the list of chnages
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void Delete(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+        }
     }
 }
