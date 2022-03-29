@@ -14,7 +14,7 @@ export class OrderDetailedComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private breadcrumbService: BreadcrumbService, 
     private orderService: OrdersService) {
-      this.breadcrumbService.set('@OrderDetailed', ' ');
+      this.breadcrumbService.set('@OrderDetailed', '');
      }
 
   ngOnInit(): void {
@@ -24,6 +24,6 @@ export class OrderDetailedComponent implements OnInit {
         this.breadcrumbService.set('@OrderDetailed', `Order# ${order.id} - ${order.status}`);
       }, error => {
         console.log(error);
-      })
+      });
   }
 }

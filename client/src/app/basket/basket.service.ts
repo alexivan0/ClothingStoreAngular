@@ -11,7 +11,7 @@ import { IProduct } from '../shared/models/product';
 })
 export class BasketService {
   baseUrl = environment.apiUrl;
-  //initializes 'basketSourc' with an initial value, than can get received when subscribing
+  //initializes 'basketSource' with an initial value, than can get received when subscribing
   private basketSource = new BehaviorSubject<IBasket>(null);
   // get the information from the private method and store it in 'basket$'
   basket$ = this.basketSource.asObservable();
@@ -19,24 +19,38 @@ export class BasketService {
   basketTotal$ = this.basketTotalSource.asObservable();
   shipping = 0;
 
-  constructor(private  http: HttpClient) { }
+  constructor(private http: HttpClient) { }
+
+  createPaymentIntent() {
+    return this.http.post(this.baseUrl + 'payments/' + this.getCurrentBasketValue().id, {})
+      .pipe(
+        map((basket: IBasket) => {
+          this.basketSource.next(basket);
+        })
+      );
+  }
 
   setShippingPrice(deliveryMethod: IDeliveryMethod) {
     this.shipping = deliveryMethod.price;
+    const basket = this.getCurrentBasketValue();
+    basket.deliveryMethodId = deliveryMethod.id;
+    basket.shippingPrice = deliveryMethod.price;
     this.calculateTotals();
+    this.setBasket(basket);
   }
 
-  getBasket(id : string) {
+  getBasket(id: string) {
     //the response from the httpclient that contains the basket
     return this.http.get(this.baseUrl + 'basket?id=' + id)
-    //set basketSource with the basket we get back from the api
+      //set basketSource with the basket we get back from the api
       .pipe(
-        map((basket: IBasket) =>{
+        map((basket: IBasket) => {
           this.basketSource
-          //set the BehaviorSubject next property/value to the 'basket' variable
-          .next(basket);
+            //set the BehaviorSubject next property/value to the 'basket' variable
+            .next(basket);
           // nothing happens yet, until we subscribe to the observable we get back from the http client
           // will use the async pipe in the components that connects to this observable(basket$)
+          this.shipping = basket.shippingPrice;
           this.calculateTotals();
         })
       );
@@ -47,7 +61,8 @@ export class BasketService {
     return this.http.post(this.baseUrl + 'basket', basket).subscribe((response: IBasket) => {
       this.basketSource.next(response);
       this.calculateTotals()
-    }, error => {console.log(error);
+    }, error => {
+      console.log(error);
     });
   }
 
@@ -73,7 +88,7 @@ export class BasketService {
   decrementItemQuantity(item: IBasketItem) {
     const basket = this.getCurrentBasketValue();
     const foundItemIndex = basket.items.findIndex(x => x.id === item.id);
-    if (basket.items[foundItemIndex].quantity > 1){
+    if (basket.items[foundItemIndex].quantity > 1) {
       basket.items[foundItemIndex].quantity--;
       this.setBasket(basket);
     }
@@ -88,7 +103,7 @@ export class BasketService {
     if (basket.items.some(x => x.id === item.id)) {
       //return all the items except the one that matches the id
       basket.items = basket.items.filter(i => i.id !== item.id);
-      if (basket.items.length > 0){
+      if (basket.items.length > 0) {
         this.setBasket(basket);
       }
       else {
@@ -106,14 +121,14 @@ export class BasketService {
   deleteBasket(basket: IBasket) {
     //delete from the API
     return this.http.delete(this.baseUrl + 'basket?id=' + basket.id)
-    //remove from browser local storage
-    .subscribe(() =>{
-      this.basketSource.next(null);
-      this.basketSource.next(null);
-      localStorage.removeItem('basket_id');
-    }, error => {
-      console.log(error);
-    });
+      //remove from browser local storage
+      .subscribe(() => {
+        this.basketSource.next(null);
+        this.basketSource.next(null);
+        localStorage.removeItem('basket_id');
+      }, error => {
+        console.log(error);
+      });
   }
 
   private calculateTotals() {
@@ -121,7 +136,7 @@ export class BasketService {
     const shipping = this.shipping;
     const subtotal = basket.items.reduce((a, b) => (b.price * b.quantity) + a, 0);
     const total = subtotal + shipping;
-    this.basketTotalSource.next({shipping, total, subtotal})
+    this.basketTotalSource.next({ shipping, total, subtotal })
   }
 
   private addOrUpdateItem(items: IBasketItem[], itemtoAdd: IBasketItem, quantity: number): IBasketItem[] {
@@ -143,7 +158,7 @@ export class BasketService {
     // persist the basket id in the local storage(on the browser)
     localStorage.setItem('basket_id', basket.id);
     return basket;
-   }
+  }
 
   private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketItem {
     return {

@@ -29,3 +29,7 @@ a:not([class*="btn"]) {
 a:not([class*="btn"]):hover {
     text-decoration: underline;
 }
+
+.StripeElement {
+    height: 3.125em;
+}
