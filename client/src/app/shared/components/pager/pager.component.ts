@@ -9,6 +9,7 @@ export class PagerComponent implements OnInit {
   // Input = receive from the parent component
   @Input() totalCount: number;
   @Input() pageSize: number;
+  @Input() pageNumber: number;
   // Pagination component / Pager component = child component on the shop component page
   // emits output from the child component to the parent component
   @Output() pageChanged = new EventEmitter<number>();
